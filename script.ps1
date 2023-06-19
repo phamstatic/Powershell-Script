@@ -1,12 +1,16 @@
 Write-Host "Starting John's automation script!"
+# $SearchItem = Read-Host -Prompt "Enter an Asset Tag or Serial Number"
+$SearchItem = "CTS1337"
 
 $Driver = Start-SeEdge
-Enter-SeUrl https://navigator.americannational.com/Page/f6b4a50f-6bec-4ccf-90ca-29bcd4924d30#/ -Driver $Driver
+Enter-SeUrl https://navigator.americannational.com/ -Driver $Driver
+
 
 $Element = Find-SeElement -Driver $Driver -Id "global-search__header__form__input_id"
-Send-SeKeys -Element $Element -Keys "SERIAL NUMBER HERE"
+Send-SeKeys -Element $Element -Keys "$SearchItem"
 
+# $myshell = New-Object -com "Wscript.Shell"
+# $myshell.sendkeys("{ENTER}")
 
-$Element = Find-SeElement -Driver -Id"1_gsCheckbox"
-Write-Host "Finding Hardware Assets"
--Element $Element Checked "Checked"
+$Element = Find-SeElement -Driver $Driver -Id "checkAllClassFilter"
+Invoke-SeClick -Element $Element
