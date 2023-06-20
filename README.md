@@ -13,4 +13,5 @@ It will ask you if you trust the repository -- go ahead and press [Y] to trust t
   <li> https://github.com/adamdriscoll/selenium-powershell
   <li> https://daniellange.wordpress.com/2009/12/18/searching-excel-in-powershell/
   <li> https://stackoverflow.com/questions/58100677/powershell-select-range-of-cells-from-excel-file-and-convert-to-csv
+  <li> https://devblogs.microsoft.com/scripting/powertip-new-lines-with-powershell/
 </ul>
