@@ -23,6 +23,7 @@ Now you can run the program by changing directory to where the script is downloa
 cd Documents # Where my script is in.
 ./script.ps1
 ```
+Once the program has started, it will open up a Microsoft Edge browser; Put that browser onto one of your large monitors. It will then ask for an Asset Tag. Paste in a tag and it should automatically search it up for you in the system. After, it will log the information of the asset tag within the console. **Double check that the information is correct**. Once ready, save the page and repeat by pasting another Asset Tag. You can exit the program whenever by typing "exit".
 
 ### Documentation and References Used:
 <ul>
