@@ -1,14 +1,37 @@
+Import-Module Selenium
+
 Write-Host "Starting John's automation script!"
 # $SearchItem = Read-Host -Prompt "Enter an Asset Tag or Serial Number"
 $SearchItem = "CTS34894"
 
-### Need to find a way to connect to Excel and obtain the information below automatically.
-$SerialNumber = "1BMYLL3"
-$AssetStatus = "Deployed"
-$Model = "Dell Latitude 3310 i3"
-$PrimaryUser = "Pham, John"
-$Location = "N/A"
-$LocationDetails = "N/A"
+$File = '\\ecsg\Data_Area\Site_South_Shore\SSH_2023_Inventory_AllAssets.xlsx'
+$Excel = New-Object -ComObject Excel.Application
+$Excel.visible = $true
+$Workbook = $Excel.workbooks.open($File)
+$Worksheet = $Workbook.Worksheets.Item(1)
+
+$Range = $Worksheet.Range("A1").EntireColumn
+$Search = $Range.find($SearchItem)
+# $Search.value() = "FOUND HERE"
+
+$Manufacturer = $Worksheet.Cells($Search.Row, 7).Value()
+$SerialNumber = $Worksheet.Cells($Search.Row, 9).Value()
+$Custodian = $Worksheet.Cells($Search.Row, 10).Value()
+$HardwareAssetStatus = $Worksheet.Cells($Search.Row, 11).Value()
+$HardwareAssetType = $Worksheet.Cells($Search.Row, 12).Value()
+$State = $Worksheet.Cells($Search.Row, 13).Value()
+$City = $Worksheet.Cells($Search.Row, 14).Value()
+$Building = $Worksheet.Cells($Search.Row, 15).Value()
+$Floor = $Worksheet.Cells($Search.Row, 16).Value()
+$Office = $Worksheet.Cells($Search.Row, 17).Value()
+
+Write-Host `n`n`n`n
+Write-Host $SearchItem $SerialNumber $Manufacturer $SerialNumber $Custodian $HardwareAssetStatus $HardwareAssetType $State $City $Building $Floor $Office  
+Write-Host `n`n`n`n
+
+$excel.Quit()
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel)
+Remove-Variable Excel
 
 $Driver = Start-SeEdge
 
