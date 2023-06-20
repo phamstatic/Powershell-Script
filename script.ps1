@@ -46,9 +46,15 @@ Send-SeKeys -Element $Element -Keys "$SearchItem"
 $Element = Find-SeElement -Driver $Driver -Id "checkAllClassFilter"
 Invoke-SeClick -Element $Element
 
-Write-Host "Waiting for the Hardware Asset to appear. (5 seconds)"
-Start-Sleep -Seconds 5
+Write-Host "Waiting for the Hardware Asset to appear. (3 seconds)"
+Start-Sleep -Seconds 3
 
 $Element = Find-SeElement -Driver $Driver -ClassName "results-details-highlight"
 Invoke-SeClick -Element $Element
+
+Start-Sleep -Seconds 2
+
+$Element = Find-SeElement -Driver $Driver -Name "LocationDetails"
+$Element | % { $_.Clear }
+Send-SeKeys -Element $Element -Keys "Test"
 
