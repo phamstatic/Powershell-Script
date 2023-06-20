@@ -1,19 +1,28 @@
 # PowerShell-Scripting
 Here are my instructions below on how to use the PowerShell script I developed.
 
+The script asks the user for an Asset Tag to which it will search the designated Excel spreadsheet for information. Then, it opens up the Microsoft Edge browser and automatically inputs in fields to search for the designated tag. After that, it will update the corresponding information obtained.
+
 ## Instructions to use:
-To begin, you will need to have the [Microsoft Edge WebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) installed. You can get it by clicking the link.
+To begin, you will need to have the [Microsoft Edge WebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) installed.
 
-Place the .exe file in your Windows PowerShell Selenium Assemblies filepath 
+Place the .exe application in your Windows PowerShell Selenium Assemblies filepath 
 
-C:\Users\CD4356\Documents\WindowsPowerShell\Modules\Selenium\3.0.1\assemblies
+*Example: C:\Users\CD4356\Documents\WindowsPowerShell\Modules\Selenium\3.0.1\assemblies*
 
 Rename the application to **MicrosoftWebDriver.exe**. 
+
 In the Windows PowerShell console, 
 ```powershell
 Install-Module Selenium -Scope CurrentUser # This gives us the framework that allows us to manipulate the web browser.
 ```
-It will ask you if you trust the repository -- go ahead and press [Y] to trust them as it is downloaded straight from the PowerShell Gallery.
+It will ask you if you trust the repository -- go ahead and press [Y] to trust them.
+
+Now you can run the program by changing directory to where the script is downloaded in and running it.
+```powershell
+cd Documents # Where my script is in.
+./script.ps1
+```
 
 ### Documentation and References Used:
 <ul>
