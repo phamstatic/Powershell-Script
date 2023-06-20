@@ -1,7 +1,14 @@
 # PowerShell-Scripting
 Here are my instructions below on how to use the PowerShell script I developed.
-**need to add download edge webdriver instructions
+
 ## Instructions to use:
+To begin, you will need to have the [Microsoft Edge WebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) installed. You can get it by clicking the link.
+
+Place the .exe file in your Windows PowerShell Selenium Assemblies filepath 
+
+C:\Users\CD4356\Documents\WindowsPowerShell\Modules\Selenium\3.0.1\assemblies
+
+Rename the application to **MicrosoftWebDriver.exe**. 
 In the Windows PowerShell console, 
 ```powershell
 Install-Module Selenium -Scope CurrentUser # This gives us the framework that allows us to manipulate the web browser.
