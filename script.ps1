@@ -1,8 +1,9 @@
 Import-Module Selenium
 
+Write-Host `n`n`n`n
 Write-Host "Starting John's automation script!"
-# $SearchItem = Read-Host -Prompt "Enter an Asset Tag or Serial Number"
-$SearchItem = "CTS34894"
+$SearchItem = Read-Host -Prompt "Enter an Asset Tag or Serial Number"
+# $SearchItem = "CTS34894"
 
 $File = '\\ecsg\Data_Area\Site_South_Shore\SSH_2023_Inventory_AllAssets.xlsx'
 $Excel = New-Object -ComObject Excel.Application
@@ -25,16 +26,13 @@ $Building = $Worksheet.Cells($Search.Row, 15).Value()
 $Floor = $Worksheet.Cells($Search.Row, 16).Value()
 $Office = $Worksheet.Cells($Search.Row, 17).Value()
 
-Write-Host `n`n`n`n
 Write-Host $SearchItem $SerialNumber $Manufacturer $SerialNumber $Custodian $HardwareAssetStatus $HardwareAssetType $State $City $Building $Floor $Office  
-Write-Host `n`n`n`n
 
 $excel.Quit()
 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel)
 Remove-Variable Excel
 
-$Driver = Start-SeEdge
-
+$Driver = Start-SeEdge -Maximized
 Enter-SeUrl https://navigator.americannational.com/ -Driver $Driver
 
 $Element = Find-SeElement -Driver $Driver -Id "global-search__header__form__input_id"
@@ -54,7 +52,26 @@ Invoke-SeClick -Element $Element
 
 Start-Sleep -Seconds 2
 
-$Element = Find-SeElement -Driver $Driver -Name "LocationDetails"
-$Element | % { $_.Clear }
-Send-SeKeys -Element $Element -Keys "Test"
+# Custodian
+$Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
+$Element = $Element.Clear()
+If ($Custodian -ne $Null) {
+	$Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
+	Send-SeKeys -Element $Element -Keys $Custodian
+}
 
+# Location
+$Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasLocation" 
+$Element = $Element.Clear()
+$Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasLocation" 
+Send-SeKeys -Element $Element -Keys "NEED TO FORMAT LOCATION HERE"
+
+# Office Location Details
+$Element = Find-SeElement -Driver $Driver -Name "LocationDetails"
+$Element = $Element.Clear()
+If ($Office -ne $Null) {
+	$Element = Find-SeElement -Driver $Driver -Name "LocationDetails"
+	Send-SeKeys -Element $Element -Keys $Office
+}
+
+Write-Host "Script complete!"
