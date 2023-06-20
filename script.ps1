@@ -1,6 +1,5 @@
 Import-Module Selenium
 
-Write-Host `n`n`n`n
 Write-Host "Starting John's automation script!"
 $SearchItem = Read-Host -Prompt "Enter an Asset Tag or Serial Number"
 # $SearchItem = "CTS34894"
@@ -26,8 +25,15 @@ $Building = $Worksheet.Cells($Search.Row, 15).Value()
 $Floor = $Worksheet.Cells($Search.Row, 16).Value()
 $Office = $Worksheet.Cells($Search.Row, 17).Value()
 
-Write-Host $SearchItem $SerialNumber $Manufacturer $SerialNumber $Custodian $HardwareAssetStatus $HardwareAssetType $State $City $Building $Floor $Office  
 
+$LocationTag = ""
+If ($Floor -ne $Null) {
+	$LocationTag = "$State-$City-$Building-$Floor"
+}
+Else {
+	$LocationTag = "$State-$City-$Building"
+}
+  
 $excel.Quit()
 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel)
 Remove-Variable Excel
@@ -44,7 +50,6 @@ Send-SeKeys -Element $Element -Keys "$SearchItem"
 $Element = Find-SeElement -Driver $Driver -Id "checkAllClassFilter"
 Invoke-SeClick -Element $Element
 
-Write-Host "Waiting for the Hardware Asset to appear. (3 seconds)"
 Start-Sleep -Seconds 3
 
 $Element = Find-SeElement -Driver $Driver -ClassName "results-details-highlight"
@@ -64,7 +69,7 @@ If ($Custodian -ne $Null) {
 $Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasLocation" 
 $Element = $Element.Clear()
 $Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasLocation" 
-Send-SeKeys -Element $Element -Keys "NEED TO FORMAT LOCATION HERE"
+Send-SeKeys -Element $Element -Keys $LocationTag
 
 # Office Location Details
 $Element = Find-SeElement -Driver $Driver -Name "LocationDetails"
@@ -75,3 +80,6 @@ If ($Office -ne $Null) {
 }
 
 Write-Host "Script complete!"
+Write-Host `n`n`n`n
+Write-Host $SearchItem $SerialNumber $Manufacturer $SerialNumber $Custodian $HardwareAssetStatus $HardwareAssetType $State $City $Building $Floor $Office
+Write-Host `n`n`n`n
