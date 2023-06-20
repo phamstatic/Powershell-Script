@@ -19,6 +19,8 @@ $SearchItem = ""
 
 While ($SearchItem -ne "exit") {
 	$SearchItem = Read-Host -Prompt "Enter an Asset Tag (e.g.: CTS31074)"
+ 	#$SearchItem = "CTS31074"
+
 	$Search = $Range.find($SearchItem)
 	
 	If ($Range.find($SearchItem) -ne $Null) {
@@ -60,12 +62,18 @@ While ($SearchItem -ne "exit") {
 	
 	$Element = Find-SeElement -Driver $Driver -Id "checkAllClassFilter"
 	Invoke-SeClick -Element $Element
-	
 	Start-Sleep -Seconds 3
-	
+
+
+	###$Element = Find-SeElement -Driver $Driver -ClassName "results-details-highlight"
+	###Invoke-SeClick -Element $Element
+ 
 	$Element = Find-SeElement -Driver $Driver -ClassName "results-details-highlight"
-	Invoke-SeClick -Element $Element
-	
+ 	For ($i = 0; $i -lt $Element.length; $i++) {
+		Write-Host $Element[$i]
+ 	}
+ 	Invoke-SeClick -Element $Element[$Element.length - 1]
+
 	Start-Sleep -Seconds 2
 	
 	# Custodian
