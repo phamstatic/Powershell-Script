@@ -1,9 +1,9 @@
 Import-Module Selenium
 
 Write-Host "Starting John's automation script!"
-$SearchItem = Read-Host -Prompt "Enter an Asset Tag or Serial Number"
-# $SearchItem = "CTS34894"
+$SearchItem = Read-Host -Prompt "Enter an Asset Tag (e.g.: CTS31074)"
 
+# Excel Workbook Path
 $File = '\\ecsg\Data_Area\Site_South_Shore\SSH_2023_Inventory_AllAssets.xlsx'
 $Excel = New-Object -ComObject Excel.Application
 $Excel.visible = $true
@@ -12,19 +12,26 @@ $Worksheet = $Workbook.Worksheets.Item(1)
 
 $Range = $Worksheet.Range("A1").EntireColumn
 $Search = $Range.find($SearchItem)
-# $Search.value() = "FOUND HERE"
 
-$Manufacturer = $Worksheet.Cells($Search.Row, 7).Value()
-$SerialNumber = $Worksheet.Cells($Search.Row, 9).Value()
-$Custodian = $Worksheet.Cells($Search.Row, 10).Value()
-$HardwareAssetStatus = $Worksheet.Cells($Search.Row, 11).Value()
-$HardwareAssetType = $Worksheet.Cells($Search.Row, 12).Value()
-$State = $Worksheet.Cells($Search.Row, 13).Value()
-$City = $Worksheet.Cells($Search.Row, 14).Value()
-$Building = $Worksheet.Cells($Search.Row, 15).Value()
-$Floor = $Worksheet.Cells($Search.Row, 16).Value()
-$Office = $Worksheet.Cells($Search.Row, 17).Value()
-
+If ($Range.find($SearchItem) -ne $Null) {
+	Write-Host "Found $SearchItem in the spreadsheet."
+ 	# $Worksheet.Cells($Search.Row, 4).Value() = "Today's Date"
+	$Manufacturer = $Worksheet.Cells($Search.Row, 7).Value()
+	$SerialNumber = $Worksheet.Cells($Search.Row, 9).Value()
+	$Custodian = $Worksheet.Cells($Search.Row, 10).Value()
+	$HardwareAssetStatus = $Worksheet.Cells($Search.Row, 11).Value()
+	$HardwareAssetType = $Worksheet.Cells($Search.Row, 12).Value()
+	$State = $Worksheet.Cells($Search.Row, 13).Value()
+	$City = $Worksheet.Cells($Search.Row, 14).Value()
+	$Building = $Worksheet.Cells($Search.Row, 15).Value()
+	$Floor = $Worksheet.Cells($Search.Row, 16).Value()
+	$Office = $Worksheet.Cells($Search.Row, 17).Value()
+}
+Else {
+	Write-Host "Could not find $SearchItem in the spreadsheet."
+	$excel.Quit()
+	Exit
+}
 
 $LocationTag = ""
 If ($Floor -ne $Null) {
