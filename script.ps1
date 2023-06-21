@@ -65,10 +65,6 @@ While ($SearchItem -ne "exit") {
 	Invoke-SeClick -Element $Element
 	Start-Sleep -Seconds 3
 
-
-	###$Element = Find-SeElement -Driver $Driver -ClassName "results-details-highlight"
-	###Invoke-SeClick -Element $Element
- 
 	$Element = Find-SeElement -Driver $Driver -ClassName "results-details-highlight"
  	#For ($i = 0; $i -lt $Element.length; $i++) {
 		#Write-Host $Element[$i]
@@ -76,7 +72,12 @@ While ($SearchItem -ne "exit") {
  	Invoke-SeClick -Element $Element[$Element.length - 1]
 
 	Start-Sleep -Seconds 2
-	
+
+	# Hardware Asset Status
+	$Element = Find-SeElement -Driver $Driver -ClassName "k-ext-dropdown"
+	$Element[4].Clear()
+	Send-SeKeys -Element $Element[4] -Keys $HardwareAssetStatus
+
 	# Custodian
 	$Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
 	$Element = $Element.Clear()
