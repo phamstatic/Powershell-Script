@@ -1,7 +1,7 @@
 Import-Module Selenium
 
 # Excel Workbook Path
-$File = '\\ecsg\Data_Area\Site_South_Shore\SSH_2023_Inventory_AllAssets.xlsx'
+$File = '\\ecsg\Data_Area\Site_South_Shore\A-F_Inventory.xlsx'
 $Excel = New-Object -ComObject Excel.Application
 $Excel.visible = $true
 $Workbook = $Excel.workbooks.open($File)
@@ -25,17 +25,17 @@ While ($SearchItem -ne "exit") {
 	
 	If ($Null -ne $Range.find($SearchItem, [Type]::Missing, [Type]::Missing, 1)) {
 		Write-Host "Found $SearchItem in the spreadsheet."
-	 	$Worksheet.Cells($Search.Row, 4).Value() = (Get-Date).ToString('M/dd/yy')
-		$Manufacturer = $Worksheet.Cells($Search.Row, 7).Value()
+	 	$Worksheet.Cells($Search.Row, 4).Value() = (Get-Date).ToString('M/dd/yy') # Update Nav Update Column to Today's Date
+		$Manufacturer = $Worksheet.Cells($Search.Row, 7).Value() 
 		$SerialNumber = $Worksheet.Cells($Search.Row, 9).Value()
-		$Custodian = $Worksheet.Cells($Search.Row, 10).Value()
-		$HardwareAssetStatus = $Worksheet.Cells($Search.Row, 11).Value()
-		$HardwareAssetType = $Worksheet.Cells($Search.Row, 12).Value()
-		$State = $Worksheet.Cells($Search.Row, 13).Value()
-		$City = $Worksheet.Cells($Search.Row, 14).Value()
-		$Building = $Worksheet.Cells($Search.Row, 15).Value()
-		$Floor = $Worksheet.Cells($Search.Row, 16).Value()
-		$Office = $Worksheet.Cells($Search.Row, 17).Value()
+		$Custodian = $Worksheet.Cells($Search.Row, 11).Value() 
+		$HardwareAssetStatus = $Worksheet.Cells($Search.Row, 13).Value()
+		$HardwareAssetType = $Worksheet.Cells($Search.Row, 14).Value()
+		$State = $Worksheet.Cells($Search.Row, 16).Value()
+		$City = $Worksheet.Cells($Search.Row, 18).Value()
+		$Building = $Worksheet.Cells($Search.Row, 19).Value()
+		$Floor = $Worksheet.Cells($Search.Row, 21).Value()
+		$Office = $Worksheet.Cells($Search.Row, 22).Value()
 	}
 	ElseIf ($SearchItem -eq "exit"){
 		Write-Host "Exit called -- ending the script."	
