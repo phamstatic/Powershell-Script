@@ -1,7 +1,7 @@
 # PowerShell-Scripting
-Here are my instructions below on how to use the PowerShell script I developed.
-
 The script asks the user for an Asset Tag to which it will search the designated Excel spreadsheet for information. Then, it opens up the Microsoft Edge browser and automatically inputs in fields to search for the designated tag. After that, it will update the corresponding information obtained.
+
+Here are my instructions below on how to use the PowerShell script I developed.
 
 ## Instructions to use:
 In the Windows PowerShell console, 
