@@ -15,10 +15,11 @@ Enter-SeUrl https://navigator.americannational.com/ -Driver $Driver
 Clear-Host
 
 Write-Host "Starting John's automation script!"
+Write-Host "The current file path is $File"
 $SearchItem = ""
 
 While ($SearchItem -ne "exit") {
-	$SearchItem = Read-Host -Prompt "Enter an Asset Tag (e.g.: CTS31074)"
+	$SearchItem = Read-Host -Prompt "Enter an Asset Tag"
  	#$SearchItem = "CTS31074"
 
 	$Search = $Range.find($SearchItem)
@@ -69,9 +70,9 @@ While ($SearchItem -ne "exit") {
 	###Invoke-SeClick -Element $Element
  
 	$Element = Find-SeElement -Driver $Driver -ClassName "results-details-highlight"
- 	For ($i = 0; $i -lt $Element.length; $i++) {
-		Write-Host $Element[$i]
- 	}
+ 	#For ($i = 0; $i -lt $Element.length; $i++) {
+		#Write-Host $Element[$i]
+ 	#}
  	Invoke-SeClick -Element $Element[$Element.length - 1]
 
 	Start-Sleep -Seconds 2
@@ -99,6 +100,7 @@ While ($SearchItem -ne "exit") {
 	}
 	
 	Write-Host "Script complete!"
+	Write-Host "Double check the information on Navigator and check for Hardware Asset Status."
 	Write-Host `n`n`n`n
 	Write-Host $SearchItem $SerialNumber $Manufacturer $SerialNumber $Custodian $HardwareAssetStatus $HardwareAssetType $State $City $Building $Floor $Office
 	Write-Host `n`n`n`n
