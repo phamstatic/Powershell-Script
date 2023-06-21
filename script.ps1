@@ -17,15 +17,13 @@ Clear-Host
 Write-Host "Starting John's automation script!"
 Write-Host "Today's date is " (Get-Date).ToString('M/dd/yy')
 Write-Host "The current file path is $File"
-$SearchItem = ""
 
+$SearchItem = ""
 While ($SearchItem -ne "exit") {
 	$SearchItem = Read-Host -Prompt "Enter an Asset Tag"
- 	#$SearchItem = "CTS31074"
-
-	$Search = $Range.find($SearchItem)
+	$Search = $Range.find($SearchItem, [Type]::Missing, [Type]::Missing, 1)
 	
-	If ($Range.find($SearchItem) -ne $Null) {
+	If ($Null -ne $Range.find($SearchItem, [Type]::Missing, [Type]::Missing, 1)) {
 		Write-Host "Found $SearchItem in the spreadsheet."
 	 	$Worksheet.Cells($Search.Row, 4).Value() = (Get-Date).ToString('M/dd/yy')
 		$Manufacturer = $Worksheet.Cells($Search.Row, 7).Value()
@@ -49,7 +47,7 @@ While ($SearchItem -ne "exit") {
 	}
 	
 	$LocationTag = ""
-	If ($Floor -ne $Null) {
+	If ($Null -ne $Floor) {
 		$LocationTag = "$State-$City-$Building-$Floor"
 	}
 	Else {
@@ -59,17 +57,12 @@ While ($SearchItem -ne "exit") {
 	$Element = Find-SeElement -Driver $Driver -Id "global-search__header__form__input_id"
 	Send-SeKeys -Element $Element -Keys "$SearchItem"
 	
-	# $myshell = New-Object -com "Wscript.Shell"
-	# $myshell.sendkeys("{ENTER}")
-	
 	$Element = Find-SeElement -Driver $Driver -Id "checkAllClassFilter"
 	Invoke-SeClick -Element $Element
 	Start-Sleep -Seconds 3
 
 	$Element = Find-SeElement -Driver $Driver -ClassName "results-details-highlight"
- 	#For ($i = 0; $i -lt $Element.length; $i++) {
-		#Write-Host $Element[$i]
- 	#}
+
  	Invoke-SeClick -Element $Element[$Element.length - 1]
 
 	Start-Sleep -Seconds 2
@@ -82,7 +75,7 @@ While ($SearchItem -ne "exit") {
 	# Custodian
 	$Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
 	$Element = $Element.Clear()
-	If ($Custodian -ne $Null) {
+	If ($Null -ne $Custodian) {
 		$Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
 		Send-SeKeys -Element $Element -Keys $Custodian
 	}
@@ -96,16 +89,16 @@ While ($SearchItem -ne "exit") {
 	# Office Location Details
 	$Element = Find-SeElement -Driver $Driver -Name "LocationDetails"
 	$Element = $Element.Clear()
-	If ($Office -ne $Null) {
+	If ($Null -ne $Office) {
 		$Element = Find-SeElement -Driver $Driver -Name "LocationDetails"
 		Send-SeKeys -Element $Element -Keys $Office
 	}
 	
 	Write-Host "Script complete!"
 	Write-Host "Double check the information on Navigator and check for Hardware Asset Status."
-	Write-Host `n`n`n`n
+	Write-Host `n`
 	Write-Host $SearchItem $SerialNumber $Manufacturer $SerialNumber $Custodian $HardwareAssetStatus $HardwareAssetType $State $City $Building $Floor $Office
-	Write-Host `n`n`n`n
+	Write-Host `n`
 }
 
 Write-Host "Ending the script."
