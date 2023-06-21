@@ -15,6 +15,7 @@ Enter-SeUrl https://navigator.americannational.com/ -Driver $Driver
 Clear-Host
 
 Write-Host "Starting John's automation script!"
+Write-Host "Today's date is " (Get-Date).ToString('M/dd/yy')
 Write-Host "The current file path is $File"
 $SearchItem = ""
 
@@ -26,7 +27,7 @@ While ($SearchItem -ne "exit") {
 	
 	If ($Range.find($SearchItem) -ne $Null) {
 		Write-Host "Found $SearchItem in the spreadsheet."
-	 	# $Worksheet.Cells($Search.Row, 4).Value() = "Today's Date"
+	 	$Worksheet.Cells($Search.Row, 4).Value() = (Get-Date).ToString('M/dd/yy')
 		$Manufacturer = $Worksheet.Cells($Search.Row, 7).Value()
 		$SerialNumber = $Worksheet.Cells($Search.Row, 9).Value()
 		$Custodian = $Worksheet.Cells($Search.Row, 10).Value()
@@ -106,6 +107,7 @@ While ($SearchItem -ne "exit") {
 	Write-Host $SearchItem $SerialNumber $Manufacturer $SerialNumber $Custodian $HardwareAssetStatus $HardwareAssetType $State $City $Building $Floor $Office
 	Write-Host `n`n`n`n
 }
+
 Write-Host "Ending the script."
 $excel.Quit()
 [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel)
