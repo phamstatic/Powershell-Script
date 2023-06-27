@@ -2,7 +2,7 @@
 This program automates the task of opening an Excel spreadsheet containing hardware asset information and inputs them into the asset's corresponding page by using Windows PowerShell, the Microsoft Edge WebDriver, and the Selenium Module.
 
 ### Before Running
-If you have not ran a PowerShell script before, you most likely will need to enable scripts on your operating system, as well as install the Selenium module.
+If you have not ran a PowerShell script before, you most likely will need to enable scripts on your operating system, as well as install the Selenium Module.
 Open the Windows PowerShell console:
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser # Use this if you are restricted by admin privileges.
