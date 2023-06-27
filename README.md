@@ -25,4 +25,6 @@ Copy an Asset Tag from the spreadsheet, click off the spreadsheet to unselect th
 
 The script will automate pasting the Asset Tag into the search bar, filter by hardware asset, and navigating to the asset’s corresponding page. It will then place all the information found in the spreadsheet.
 
+![Screenshot](ScriptScreenShot.png)
+
 Once this process is done, double check that the information is correct and leave the page by either saving or canceling. The script is now ready to be reran!
