@@ -45,10 +45,13 @@ $Range = $Worksheet.Range("A1").EntireColumn
 $SearchItem = ""
 
 <# This block will run the script in an infinite loop until "exit" has been inputted. The program will search for the search item in the spreadsheet and obtains all related information. #>
-Write-Host "This code was last modified on 6/27/23 12:52pm by John"
-Write-Host "To use properly, place the browser maximized on a large screen; Input the asset tag and let it automate the process. Once done, return to the homepage and continue inputting."
+Write-Host "This code was last modified on 6/27/23 1:01pm by John" -ForegroundColor red
+Write-Host "To use properly, place the browser maximized on a large screen"
+Write-Host "Copy an asset tag and CLICK OFF the Excel spreadsheet to deselect it."
+Write-Host "Paste the asset tag and let it automate the process. Once done, return to the homepage and continue inputting."
 Write-Host "REMINDER: Double check that the information matches from the spreadsheet to Navigator before saving." -ForegroundColor yellow
 While ($SearchItem -ne "exit") {
+    Write-Host `n
     $SearchItem = Read-Host -Prompt "Enter an Asset Tag"
     $Search = $Range.find($SearchItem, [Type]::Missing, [Type]::Missing, 1)
     If ($Null -ne $Range.find($SearchItem, [Type]::Missing, [Type]::Missing, 1)) {
