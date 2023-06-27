@@ -45,13 +45,15 @@ $Range = $Worksheet.Range("A1").EntireColumn
 $SearchItem = ""
 
 <# This block will run the script in an infinite loop until "exit" has been inputted. The program will search for the search item in the spreadsheet and obtains all related information. #>
+Write-Host "This code was last modified on 6/27/23 12:52pm by John"
+Write-Host "To use properly, place the browser maximized on a large screen; Input the asset tag and let it automate the process. Once done, return to the homepage and continue inputting."
 Write-Host "REMINDER: Double check that the information matches from the spreadsheet to Navigator before saving." -ForegroundColor yellow
 While ($SearchItem -ne "exit") {
     $SearchItem = Read-Host -Prompt "Enter an Asset Tag"
     $Search = $Range.find($SearchItem, [Type]::Missing, [Type]::Missing, 1)
     If ($Null -ne $Range.find($SearchItem, [Type]::Missing, [Type]::Missing, 1)) {
         Write-Host "Found $SearchItem in the spreadsheet."
-        # $Worksheet.Cells($Search.Row, $navUpdateColumn).Value() = (Get-Date).ToString('M/dd/yy') # This line will update the Nav Update column if uncommented.
+        $Worksheet.Cells($Search.Row, $navUpdateColumn).Value() = (Get-Date).ToString('M/dd/yy') # This line will update the Nav Update column if uncommented.
 		$Manufacturer = $Worksheet.Cells($Search.Row, $manufacturerColumn).Value() 
 		$SerialNumber = $Worksheet.Cells($Search.Row, $serialNumberColumn).Value()
 		$Custodian = $Worksheet.Cells($Search.Row, $custodianColumn).Value() 
