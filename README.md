@@ -1,5 +1,5 @@
-# John's PowerShell Script
-This program automates the task of opening an Excel spreadsheet containing hardware asset information and inputs them into the asset's corresponding page by using Windows PowerShell, the Microsoft Edge WebDriver, and the Selenium Module.
+# Web Automation Script
+This program automates the task of opening an Excel spreadsheet containing hardware asset information and inputs them into the asset's corresponding page by using Windows PowerShell, the Microsoft Edge WebDriver, and the Selenium Module to manipulate HTML/CSS elements and attributes.
 
 ### Before Running
 If you have not ran a PowerShell script before, you most likely will need to enable scripts on your operating system, as well as install the Selenium Module.
@@ -10,7 +10,7 @@ Install-Module Selenium -Scope CurrentUser # This gives us the framework that al
 ```
 It will prompt to ask if you trust the repository -- press [Y] for yes.
 
-Download the Microsoft Edge WebDriver (I have provided a copy in this repo). Place it into your Windows PowerShell Selenium Assemblies filepath. 
+Download the Microsoft Edge WebDriver (I have provided a copy of 116.0.1938.10 in this repo). Place it into your Windows PowerShell Selenium Assemblies filepath. 
 *Example: C:\Users\CD0000\Documents\WindowsPowerShell\Modules\Selenium\3.0.1\assemblies
 ![Screenshot](WebDriverScreenShot.png)
 
