@@ -11,7 +11,7 @@ Install-Module Selenium -Scope CurrentUser # This gives us the framework that al
 It will prompt to ask if you trust the repository -- press [Y] for yes.
 
 Download the Microsoft Edge WebDriver (I have provided a copy in this repo). Place it into your Windows PowerShell Selenium Assemblies filepath. 
-*Example: C:\Users\CD4356\Documents\WindowsPowerShell\Modules\Selenium\3.0.1\assemblies
+*Example: C:\Users\CD0000\Documents\WindowsPowerShell\Modules\Selenium\3.0.1\assemblies
 ![Screenshot](WebDriverScreenShot.png)
 
 ### Usage
