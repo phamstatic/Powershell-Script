@@ -16,10 +16,10 @@ Download the Microsoft Edge WebDriver (I have provided a copy of 116.0.1938.10 i
 
 ### Usage
 ```powershell
-# Navigate to the file path where the script is stored
+# Navigate to the file path where the script is stored and run the command:
 .\script.ps1
 ```
-This will start the script and open up Microsoft Edge as well as Excel.
+This will start the script in a PowerShell console terminal and open up Microsoft Edge as well as Excel.
 
 Copy an Asset Tag from the spreadsheet, click off the spreadsheet to unselect the item and paste into the console.
 
