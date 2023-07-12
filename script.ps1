@@ -1,25 +1,26 @@
 Import-Module Selenium
 
-<# This variable holds the path to the Excel spreadsheet. #>
-$excelPath = 'FILE-PATH.xlsx'
+<# These variables hold the path to the Excel spreadsheet and webpage link. #>
+$excelPath = 'insert_file_path_here'
+$navigatorLink = 'insert_link_here'
 
 <# These variables hold the column numbers to their corresponding identifiers. #>
-$navUpdateColumn = 4
-$manufacturerColumn = 7
-$serialNumberColumn = 9
-$custodianColumn = 11
-$hardwareAssetStatusColumn = 13
-$hardwareAssetTypeColumn = 14
-$stateColumn = 16
-$cityColumn = 18
-$buildingColumn = 19
-$floorColumn = 21
-$officeColumn = 22
+$navUpdateColumn = 0
+$manufacturerColumn = 0
+$serialNumberColumn = 0
+$custodianColumn = 0
+$hardwareAssetStatusColumn = 0
+$hardwareAssetTypeColumn = 0
+$stateColumn = 0
+$cityColumn = 0
+$buildingColumn = 0
+$floorColumn = 0
+$officeColumn = 0
 
 <# This block holds the process of opening up Microsoft Edge. #>
 Try {
     $Driver = Start-SeEdge -Maximized -ErrorAction Stop
-    Enter-SeUrl URL-LINK -Driver $Driver -ErrorAction Stop
+    Enter-SeUrl $navigatorLink -Driver $Driver -ErrorAction Stop
 }
 Catch [System.Management.Automation.MethodInvocationException]{
     Throw "Could not find or open the Microsoft Edge browser."
@@ -45,7 +46,7 @@ $Range = $Worksheet.Range("A1").EntireColumn
 $SearchItem = ""
 
 <# This block will run the script in an infinite loop until "exit" has been inputted. The program will search for the search item in the spreadsheet and obtains all related information. #>
-Write-Host "This code was last modified on 7/05/23 2:06pm by John" -ForegroundColor red
+Write-Host "This code was last modified on 7/12/23 by John" -ForegroundColor red
 Write-Host "To use properly, place the browser maximized on a large screen"
 Write-Host "Copy an asset tag and CLICK OFF the Excel spreadsheet to deselect it."
 Write-Host "Paste the asset tag and let it automate the process. Once done, return to the homepage and continue inputting."
