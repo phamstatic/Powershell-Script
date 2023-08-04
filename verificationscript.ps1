@@ -1,8 +1,8 @@
 Import-Module $PWD\Selenium
 
 $myInitials = "2023 Inventory JP"
-$excelPath = 'Path to the Excel Spreadsheet'
-$navigatorLink = 'Link to Navigator'
+$excelPath = ''
+$navigatorLink = ''
 
 <# Excel Column Variables #>
 $navUpdateColumn = 4
@@ -120,43 +120,63 @@ While ($SearchItem -ne "exit") {
         <# This block finds the Finance tab button. #>
         Try {
             $Element = Find-SeElement -Driver $Driver -TagName a
-            Invoke-SeClick -Element $Element[42]
+            $TabIndex = 42
+            If ($Element[$TabIndex].GetAttribute("text") -ne "Finance") {
+                For ($i = 0; $i -lt $Element.length; $i++) {
+                    If ($Element[$i].GetAttribute("text") -eq "Finance") {
+                        $TabIndex = $i
+                        break
+                    }
+                }
+            }
+            Invoke-SeClick -Element $Element[$TabIndex]
         } 
         Catch {
             Write-Host "Failed to click the Finance tab button." -ForegroundColor red
         }
 
         <# This block checks and verifies the custodian within the Finance tab. #>
-        do {
-            $Failed = $false
-            Try {
+        Start-Sleep -Seconds 2
+        Try {
+            $Element = Find-SeElement -Driver $Driver -Name "OwnedBy"
+            If (($Custodian -eq $Element.GetAttribute("value")) -or (($Custodian -eq "Enterprise Infrastructure" -and $Element.GetAttribute("value") -eq "Infrastructure, Enterprise"))) { #<----------
+                Write-Host "Finance Custodian" $Custodian "matches, no update" -ForegroundColor green
+            }
+            ElseIf (([string]::IsNullOrEmpty($Element.GetAttribute("value"))) -and ($Custodian = "Enterprise Infrastructure")) {
+                Write-Host "Finance Custodian tab empty, updating to $Custodian" -ForegroundColor blue
+                Send-SeKeys -Element $Element -Keys "Infrastructure, Enterprise"
+            }
+            Else {
+                $Element = $Element.Clear()
                 $Element = Find-SeElement -Driver $Driver -Name "OwnedBy"
-                If (($Custodian -eq $Element.GetAttribute("value")) -or (($Custodian -eq "Enterprise Infrastructure" -and $Element.GetAttribute("value") -eq "Infrastructure, Enterprise"))) { #<----------
-                    Write-Host "Finance Custodian" $Custodian "matches, no update" -ForegroundColor green
-                }
-                ElseIf (([string]::IsNullOrEmpty($Element.GetAttribute("value"))) -and ($Custodian = "Enterprise Infrastructure")) {
-                    Write-Host "Finance Custodian tab empty, updating to $Custodian" -ForegroundColor blue
+                If ($Custodian -eq "Enterprise Infrastructure") {
                     Send-SeKeys -Element $Element -Keys "Infrastructure, Enterprise"
                 }
                 Else {
-                    $Element = $Element.Clear()
-                    If ($Null -ne $Custodian) {
-                        $Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
-                        Send-SeKeys -Element $Element -Keys $Custodian
-                        Write-Host "Finance Custodian does not match, updating to $Custodian" -ForegroundColor blue
-                    }                
+                    Send-SeKeys -Element $Element -Keys $Custodian
                 }
+                Write-Host "Finance Custodian does not match, updating to $Custodian" -ForegroundColor blue       
             }
-            Catch {
-                Write-Host "Cannot find Finance tab"
-            } 
-        } while ($Failed)
+        }
+        Catch {
+            Write-Host "Cannot find Finance tab"
+            $Failed = $true
+        } 
         Start-Sleep -Seconds 2
 
         <# This block finds the General tab button. #>
         Try {
             $Element = Find-SeElement -Driver $Driver -TagName a
-            Invoke-SeClick -Element $Element[41]
+            $TabIndex = 41
+            If ($Element[$TabIndex].GetAttribute("text") -ne "General") {
+                For ($i = 0; $i -lt $Element.length; $i++) {
+                    If ($Element[$i].GetAttribute("text") -eq "General") {
+                        $TabIndex = $i
+                        break
+                    }
+                }
+            }
+            Invoke-SeClick -Element $Element[$TabIndex]
         } 
         Catch {
             Write-Host "Failed to click the General tab button." -ForegroundColor red
@@ -218,7 +238,9 @@ While ($SearchItem -ne "exit") {
             $Element.Clear()
             Send-SeKeys -Element $Element -Keys $myInitials
             Send-SeKeys -Element $Element -Keys `n
-            Send-SeKeys -Element $Element -Keys $descriptionContents
+            If ($descriptionContents.length -gt 0) {
+                Send-SeKeys -Element $Element -Keys $descriptionContents
+            }
             Write-Host "Description has been updated with $myInitials" -ForegroundColor blue
         }
         Catch {
@@ -239,15 +261,17 @@ While ($SearchItem -ne "exit") {
                 }
                 Else {
                     $Element = $Element.Clear()
-                    If ($Null -ne $Custodian) {
-                        $Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
-                        Send-SeKeys -Element $Element -Keys $Custodian
-                        Write-Host "Custodian has been updated to $Custodian" -ForegroundColor blue
+                    If ($Custodian -eq "Enterprise Infrastructure") {
+                        Send-SeKeys -Element $Element -Keys "Infrastructure, Enterprise"
                     }
+                    Else {
+                        Send-SeKeys -Element $Element -Keys $Custodian
+                    }                    
+                    Write-Host "Custodian has been updated to $Custodian" -ForegroundColor blue
                 }
             }
             Catch {
-                Write-Host "Something went wrong with inputting $Custodian into Custodian." -ForegroundColor red 
+                Write-Host "Something went wrong with inputting $Custodian into Custodian. Retrying..." -ForegroundColor red 
                 $Failed = $true
             }
         } while ($Failed)
