@@ -117,6 +117,7 @@ While ($SearchItem -ne "exit") {
             }
         } while ($Failed)
 
+        Start-Sleep -Seconds 2
         <# This block finds the Finance tab button. #>
         Try {
             $Element = Find-SeElement -Driver $Driver -TagName a
@@ -255,7 +256,7 @@ While ($SearchItem -ne "exit") {
                 If (($Custodian -eq $Element.GetAttribute("value")) -or ($Custodian -eq "Enterprise Infrastructure" -and $Element.GetAttribute("value") -eq "Infrastructure, Enterprise")) {
                     Write-Host "Custodian" $Custodian "matches, no update" -ForegroundColor green
                 }
-                ElseIf (([string]::IsNullOrEmpty($Element.GetAttribute("value"))) -and ($Custodian = "Enterprise Infrastructure")) {
+                ElseIf (([string]::IsNullOrEmpty($Element.GetAttribute("value"))) -and ($Custodian -eq "Enterprise Infrastructure")) {
                     Write-Host "Custodian tab empty, updating to $Custodian" -ForegroundColor blue
                     Send-SeKeys -Element $Element -Keys "Infrastructure, Enterprise"
                 }
@@ -271,11 +272,32 @@ While ($SearchItem -ne "exit") {
                 }
             }
             Catch {
-                Write-Host "Something went wrong with inputting $Custodian into Custodian. Retrying..." -ForegroundColor red 
                 $Failed = $true
             }
         } while ($Failed)
         Start-Sleep -Seconds 2
+    
+    <# AUTO SAVER #>
+        Try {
+            # $Element = Find-SeElement -Driver $Driver -ClassName "fa fa-check cs-form__drawer--save"
+            # Invoke-SeClick -Element $Element
+            $Element = Find-SeElement -Driver $Driver -TagName button
+            $TabIndex = 33
+            If ($Element[$TabIndex].GetAttribute("outerText") -ne "SUBMIT") {
+                For ($i = 0; $i -lt $Element.length; $i++) {
+                    If ($Element[$i].GetAttribute("outerText") -eq "SUBMIT") {
+                        $TabIndex = $i
+                        Write-Host $i
+                        break
+                    }
+                }
+            }
+            Invoke-SeClick -Element $Element[$TabIndex]
+        }
+        Catch {
+            Write-Host "Failed to save" -ForegroundColor red
+        }
+        
     }
     ElseIf ($SearchItem -eq "exit") {
         Write-Host "Exit called -- ending the script." -ForegroundColor red
