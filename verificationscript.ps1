@@ -77,6 +77,7 @@ While ($SearchItem -ne "exit") {
         }
 
         <# This block finds the upper search bar. #>
+        Start-Sleep -Seconds 2
         do {
             $Failed = $false
             Try {
@@ -249,32 +250,26 @@ While ($SearchItem -ne "exit") {
         }
 
         <# This block checks and verifies the front page custodian. #>
-        do {
-            Try {
-                $Failed = $false
+        Try {
+            $Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
+            If (($Custodian -eq $Element.GetAttribute("value")) -or ($Custodian -eq "Enterprise Infrastructure" -and $Element.GetAttribute("value") -eq "Infrastructure, Enterprise")) {
+                Write-Host "Custodian" $Custodian "matches, no update" -ForegroundColor green
+            }
+            Else {
+                $Element = $Element.Clear()
                 $Element = Find-SeElement -Driver $Driver -Name "Target_HardwareAssetHasPrimaryUser"
-                If (($Custodian -eq $Element.GetAttribute("value")) -or ($Custodian -eq "Enterprise Infrastructure" -and $Element.GetAttribute("value") -eq "Infrastructure, Enterprise")) {
-                    Write-Host "Custodian" $Custodian "matches, no update" -ForegroundColor green
-                }
-                ElseIf (([string]::IsNullOrEmpty($Element.GetAttribute("value"))) -and ($Custodian -eq "Enterprise Infrastructure")) {
-                    Write-Host "Custodian tab empty, updating to $Custodian" -ForegroundColor blue
+                If ($Custodian -eq "Enterprise Infrastructure") {
                     Send-SeKeys -Element $Element -Keys "Infrastructure, Enterprise"
                 }
                 Else {
-                    $Element = $Element.Clear()
-                    If ($Custodian -eq "Enterprise Infrastructure") {
-                        Send-SeKeys -Element $Element -Keys "Infrastructure, Enterprise"
-                    }
-                    Else {
-                        Send-SeKeys -Element $Element -Keys $Custodian
-                    }                    
-                    Write-Host "Custodian has been updated to $Custodian" -ForegroundColor blue
-                }
+                    Send-SeKeys -Element $Element -Keys $Custodian
+                }                    
+                Write-Host "Custodian has been updated to $Custodian" -ForegroundColor blue
             }
-            Catch {
-                $Failed = $true
-            }
-        } while ($Failed)
+        }
+        Catch {
+            Write-Host "Failed to update front page Custodian" -ForegroundColor red
+        }
         Start-Sleep -Seconds 2
     
     <# AUTO SAVER #>
@@ -297,7 +292,7 @@ While ($SearchItem -ne "exit") {
         Catch {
             Write-Host "Failed to save" -ForegroundColor red
         }
-        
+        Start-Sleep -Seconds 5
     }
     ElseIf ($SearchItem -eq "exit") {
         Write-Host "Exit called -- ending the script." -ForegroundColor red
